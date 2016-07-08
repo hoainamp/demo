@@ -1,55 +1,74 @@
 {% extends "base.html" %}
-{% load urlify %}
 
+{% load urlify %}
 {% block head_title %}
 {{ instance.title }}| {{ block.super }}
 {% endblock head_title %}
-
-
 <style>
-{% block style %}
-h1{
-	color:#7777777;
-}
-{% endblock style %}
+   {% block style %}
+   h1{
+      color: green;
+   }
+   /* hover */
+   .grow img {
+     height: 300px;
+     width: 300px;
+    
+     -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+          -o-transition: all 1s ease;
+         -ms-transition: all 1s ease;
+             transition: all 1s ease;
+   }
+ 
+   .grow img:hover {
+     width: 400px;
+     height: 400px;
+   }
+
+   {% endblock style %}
 </style>
-
-
 {% block content %}
-<div class='col-sm-6 col-sm-offset-3'>
-	{% if instance.image %}
-	<img src='{{ instance.image.url }}' class='img-responsive' />
-	{% endif %}
-<h1>{{title}}<small>{{instance.timestamp|timesince}}</small></h1>	
+<div class='row'>
+   <div class='col-sm-4'>
+      <div class="grow pic">
+          {% if instance.image %}
+            <figure><img src='{{ instance.image.url }}' class='img-responsive' /></figure>
+         {% endif %}
+      </div>
+      <p>
+      <div class="fb-like" data-href="{{ request.build_absolute_url }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true">
+      </div>
+      <hr/>
+      </p>
+      <div class="fb-comments" data-href="{{ request.build_absolute_url }}" data-numposts="5"></div>
+ </div>
+   <!--  -->
+   <div class='col-sm-4'>
+    <h1>{{title}}<small>{% if instance.draft %} <span style='color:red'> Draft </span>{% endif %}{{ instance.publish }}</small></h1>
+      {% if instance.user.get_full_name %}
+      <p>Author: {{ instance.user.get_full_name }}</p>
+      {% endif %}
+      {{ instance.content|linebreaks }}</br>
+   </div>
+   <div class='col-sm-4'>
+      <h1>San pham ban chay</h1>
+      <div>
+      	<div class="media">
+			  <div class="media-left">
+			    <a href="#">
+			      <img class="media-object" src='{{ instance.image.url }}' width='100px' height='150px' >
+			    </a>
+			  </div>
+			  <div class="media-body">
+			    <h4 class="media-heading">Media heading</h4>
+			    ...
+			  </div>
+		 </div>	
 
-{{ instance.content|urlify }}<br>
 
-{{ share_string }}
-
-<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_url }}">
- Facebook
-</a>
-
-<a href="https://twitter.com/home?status={{ instance.content|truncatechars:80|urlify }}%20{{request.build_absolute_url }}">
- Twitter
-</a>
-
-<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_url }}/&title=
-{{ instance.title }}&<summary>=
-{{ share_string }}&source={{ request.build_absolute_url }}">
-Linkedin
-</a>
-
-<a href='https://plus.google.com/share?url={{ request.build_absolute_url }}'>
-
-<a href="http://www.reddit.com/submit?url={{ request.build_absolute_url }}/&title=
-{{ share_string }}">Reddit</a>
-
-{{ instance.content|linebreaks}}</br>
-
-
-{{ instance.updated }}</br>
-{{ instance.id }}</br>
+      </div>
+   </div>
 </div>
 
 {% endblock content %}

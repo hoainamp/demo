@@ -16,4 +16,7 @@ urlpatterns = [
    	url(r'^(?P<id>\d+)/edit/$', post_update, name='update'),
    	url(r'^(?P<id>\d+)/delete/$', post_delete),
     #url(r'^posts/$,"<appname>.view.<function_name>"),
+    #url(r'^thank-you/$','')
+    
+     
 ]
